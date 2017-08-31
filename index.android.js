@@ -16,6 +16,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
+console.ignoredYellowBox = ['Setting a timer'];
+
 const uiTheme = {
   palette: {
       primaryColor: COLOR.blue400,

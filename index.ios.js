@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, Alert, AppRegistry, View, Text,Image, TextInput, Navigator, NativeModules } from 'react-native';
+import { Dimensions, Animated, Alert, AppRegistry, View, Text,Image, TextInput, Navigator, NativeModules } from 'react-native';
 import { COLOR, ThemeProvider, Button, Toolbar } from 'react-native-material-ui';
 import Login from './components/login.js';
 import Signup from './components/signup.js';

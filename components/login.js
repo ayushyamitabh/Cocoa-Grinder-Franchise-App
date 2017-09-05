@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Alert,
+         Animated,
          Dimensions,
          Image,
          ScrollView,

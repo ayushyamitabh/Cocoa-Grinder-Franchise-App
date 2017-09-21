@@ -6,16 +6,6 @@ import Signup from './components/signup.js';
 import User from './components/user.js';
 import * as firebase from 'firebase';
 
-var config = {
-  apiKey: "AIzaSyCS6-iikOnF-t6vLskVRbLGJaowIKWSAF8",
-  authDomain: "cocoagrinder-af99e.firebaseapp.com",
-  databaseURL: "https://cocoagrinder-af99e.firebaseio.com",
-  projectId: "cocoagrinder-af99e",
-  storageBucket: "cocoagrinder-af99e.appspot.com",
-  messagingSenderId: "642782349955"
-};
-firebase.initializeApp(config);
-
 console.ignoredYellowBox = ['Setting a timer'];
 
 const uiTheme = {

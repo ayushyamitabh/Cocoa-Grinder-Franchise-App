@@ -6,9 +6,25 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  ScrollView
+  ScrollView,
+  View
 } from 'react-native';
-import { Button, ThemeProvider} from 'react-navigation';  
+import {Button, 
+        COLOR, 
+        Divider,
+        ThemeProvider} from 'react-native-material-ui';
+import * as firebase from 'firebase';
+
+const uiTheme = {
+  palette: {
+      primaryColor: COLOR.blue400,
+  },
+  toolbar: {
+      container: {
+          height: 50,
+      },
+  },
+};
 
 export default class Login extends React.Component {
     constructor (props) {
@@ -22,11 +38,14 @@ export default class Login extends React.Component {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          paddingTop: 15
+          paddingTop: Dimensions.get('window').height/100 * 10
         },
         heading: {
           fontSize: 24,
           // color: '#176BEF'
+        },
+        headerLogo: {
+          width: Dimensions.get('window').width/100 * 10
         },
         logo: {
           width: Dimensions.get('window').width/100 * 62.5,
@@ -41,38 +60,68 @@ export default class Login extends React.Component {
       })
     }
     static navigationOptions = {
-      title: 'Cocoa Grinder Franchisee',
+      title: 'Sign In',
+      headerLeft: null
     };
     render() {
       return (
-          <ThemeProvider>
-            <ScrollView style={this.styles.view} contentContainerStyle={this.styles.container}>
-                <Image 
-                    style={this.styles.logo}
-                    source={require('./assets/res/cgnycBlack.png')}
-                />
-                <Text style={this.styles.heading}> 
-                    COCOA GRINDER FRANCHISEE
-                </Text>
-                <TextInput 
-                    style={this.styles.input}
-                    placeholder="E-Mail" 
-                    keyboardType="email-address"
-                    returnKeyType="next"
-                    onSubmitEditing={()=>{this.refs.lpassword.focus()}}
-                    value={this.state.email} 
-                    onChangeText={(value)=>{this.setState({email:value})}}
-                />
-                <TextInput
-                    ref='lpassword'
-                    style={this.styles.input}          
-                    placeholder="Password" 
-                    secureTextEntry={true}
-                    value={this.state.password} 
-                    onChangeText={(value)=>{this.setState({password:value})}}
-                    editable={this.state.email === '' ? false: true}
-                />     
-            </ScrollView>
+        <ThemeProvider uiTheme={uiTheme}>
+          <ScrollView style={this.styles.view} contentContainerStyle={this.styles.container}>
+            <Image 
+                style={this.styles.logo}
+                source={require('./assets/res/cgnycBlack.png')}
+            />
+            <Text style={this.styles.heading}> 
+                COCOA GRINDER FRANCHISEE
+            </Text>
+            <TextInput 
+                style={this.styles.input}
+                placeholder="E-Mail" 
+                keyboardType="email-address"
+                returnKeyType="next"
+                onSubmitEditing={()=>{this.refs.lpassword.focus()}}
+                value={this.state.email} 
+                onChangeText={(value)=>{this.setState({email:value})}}
+            />
+            <TextInput
+                ref='lpassword'
+                style={this.styles.input}          
+                placeholder="Password" 
+                secureTextEntry={true}
+                value={this.state.password} 
+                onChangeText={(value)=>{this.setState({password:value})}}
+                editable={this.state.email === '' ? false: true}
+                onSubmitEditing={()=>{firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);}}
+            />
+            <Button         
+                primary 
+                raised 
+                disabled = {this.state.email.length < 7 || this.state.password.length < 6 ? true: false}
+                text="SIGN IN" 
+                style={{
+                    container:{
+                        width:Dimensions.get('window').width/100* 69
+                    }
+                }}
+                onPress={()=>{
+                    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
+                }}
+            />
+            <Divider style={{container:{paddingTop:2,paddingBottom:2}}} />
+            <Button         
+                accent 
+                raised 
+                text="SIGN UP" 
+                style={{
+                    container:{
+                        width:Dimensions.get('window').width/100* 69
+                    }
+                }}
+                onPress={()=>{
+                    this.props.navigation.navigate('Signup');
+                }}
+            />
+          </ScrollView>
         </ThemeProvider>
       );
     }

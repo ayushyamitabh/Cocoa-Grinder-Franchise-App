@@ -1,19 +1,20 @@
 import React from 'react';
-import {
-  AppRegistry,
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  ScrollView,
-  View
-} from 'react-native';
+import {Alert,
+        AppRegistry,
+        Dimensions,
+        Image,
+        StyleSheet,
+        Text,
+        TextInput,
+        ScrollView,
+        View
+        } from 'react-native';
 import {Button, 
         COLOR, 
         Divider,
         ThemeProvider} from 'react-native-material-ui';
 import * as firebase from 'firebase';
+import {NavigationActions} from 'react-navigation';
 
 const uiTheme = {
   palette: {
@@ -61,8 +62,10 @@ export default class Login extends React.Component {
     }
     static navigationOptions = {
       title: 'Sign In',
-      headerLeft: null
+      headerLeft: null,
+      left: null
     };
+    static paths = null;
     render() {
       return (
         <ThemeProvider uiTheme={uiTheme}>
@@ -91,7 +94,11 @@ export default class Login extends React.Component {
                 value={this.state.password} 
                 onChangeText={(value)=>{this.setState({password:value})}}
                 editable={this.state.email === '' ? false: true}
-                onSubmitEditing={()=>{firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);}}
+                onSubmitEditing={()=>{
+                    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch((error)=>{
+                        Alert.alert('Login Error',error.message,[{text:'Retry', onPress: ()=>{}}],{cancelable:true});
+                    });
+                }}
             />
             <Button         
                 primary 
@@ -104,7 +111,9 @@ export default class Login extends React.Component {
                     }
                 }}
                 onPress={()=>{
-                    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
+                    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch((error)=>{
+                        Alert.alert('Login Error',error.message,[{text:'Retry', onPress: ()=>{}}],{cancelable:true});
+                    });
                 }}
             />
             <Divider style={{container:{paddingTop:2,paddingBottom:2}}} />

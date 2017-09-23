@@ -21,8 +21,10 @@ import { Button,
     ThemeProvider, 
     Toolbar
     } from 'react-native-material-ui';
-
 import * as firebase from 'firebase';
+import Shop from './Shop';
+import Discussion from './Discussion';
+
 const styles = StyleSheet.create({
     sectionTitle: {
         textAlign: 'center',
@@ -48,7 +50,8 @@ const uiTheme = {
 class Account extends Component {
     static navigationOptions = {
         header: null,
-        tabBarLabel: 'Account'
+        tabBarLabel: 'Account',
+        left: null
     };
     constructor (props) {
         super (props);
@@ -73,6 +76,11 @@ class Account extends Component {
                 this.setState({loading:false})
             }
         });
+    }
+    componentWillUnmount () {
+        this.setState({
+            data: {}
+        })
     }
     saveChanges () {
         firebase.database().ref(`Users/${firebase.auth().currentUser.uid}`).set(this.state.data).then(()=>{
@@ -385,48 +393,161 @@ class Account extends Component {
     }
 }
 
-class Shop extends Component {
-    static navigationOptions = {
-        header: null,
-        tabBarLabel: 'Shop'
-    };
-    render() {
-        return (
-            <ThemeProvider uiTheme={uiTheme}> 
-                <ScrollView>
-                    
-                </ScrollView>
-            </ThemeProvider>
-        );
-    }
-}
-
 class Cart extends Component {
     static navigationOptions = {
         header: null,
         tabBarLabel: 'Cart'
     };
-    render() {
-        return (
-            <ThemeProvider uiTheme={uiTheme}> 
-                <ScrollView>
-
-                </ScrollView>
-            </ThemeProvider>
-        );
+    constructor (props){
+        super(props);
+        this.state = {
+            cart: {},
+            notify: false,
+            notifyMsg: ''
+        };
+        this.placeOrder = this.placeOrder.bind(this);
     }
-}
-
-class Discussion extends Component {
-    static navigationOptions = {
-        header: null,
-        tabBarLabel: 'Discussion'
-    };
+    componentWillMount() {
+        var uid = firebase.auth().currentUser.uid;
+        firebase.database().ref(`Users/${uid}/cart`).on('value', (snap)=>{
+            if (snap.val()) {
+                this.setState({
+                    cart: snap.val()
+                })
+            }
+        })
+    }
+    placeOrder () {
+        var orderData = {
+            cart: this.state.cart,
+            user: firebase.auth().currentUser.uid,
+            confirmed: false
+        };
+        firebase.database().ref(`Orders/nextNumber`).once('value', (numSnap)=>{
+            var nextNumber = numSnap.val();
+            nextNumber = parseInt(nextNumber);
+            var updatedNumber = nextNumber + 1;
+            firebase.database().ref('Orders/nextNumber').set(updatedNumber);
+            firebase.database().ref(`Orders/${nextNumber}`).set(orderData);
+            firebase.database().ref(`Users/${firebase.auth().currentUser.uid}/orders`).once('value', (snap)=>{
+                if (snap.val()) {
+                    var newOrders = snap.val();
+                    newOrders.push(nextNumber);
+                    firebase.database().ref(`Users/${firebase.auth().currentUser.uid}/orders`).set(newOrders);
+                } else {
+                    firebase.database().ref(`Users/${firebase.auth().currentUser.uid}/orders`).set([nextNumber]);                    
+                }
+            });
+            firebase.database().ref(`Users/${firebase.auth().currentUser.uid}/cart`).set({});
+        })
+        this.setState({
+            notify: true,
+            notifyMsg: 'PLACED YOUR ORDER',
+            cart: {}
+        })
+        setTimeout(()=>{this.setState({notify:false,notifyMsg:''})}, 3000);
+    }
     render() {
         return (
             <ThemeProvider uiTheme={uiTheme}> 
-                <ScrollView>
-
+                <ScrollView
+                    contentContainerStyle={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        paddingBottom: 40
+                    }}
+                >  
+                    {
+                        this.state.notify ? 
+                        <View 
+                            style={{
+                                backgroundColor:COLOR.blue400, 
+                                width:Dimensions.get('window').width,
+                                paddingTop: 5,
+                                paddingBottom: 5
+                            }}
+                        >
+                            <Text 
+                                style={{
+                                    color:COLOR.white, 
+                                    textAlign:'center'
+                                }}
+                            >
+                                {this.state.notifyMsg}
+                            </Text>
+                        </View> :
+                        null
+                    }
+                    <Button 
+                        disabled={Object.keys(this.state.cart).length > 0 ? false : true}
+                        accent
+                        primary
+                        text={'EMPTY CART'} 
+                        style={{
+                            container:{
+                                width: Dimensions.get('window').width/100 * 75,
+                                marginTop:5
+                            }
+                        }}
+                        onPress={()=>{
+                            firebase.database().ref(`Users/${firebase.auth().currentUser.uid}/cart`).set({}).then(()=>{
+                                this.setState({
+                                    notify:true,
+                                    notifyMsg:'EMPTIED YOUR CART',
+                                    cart: {}
+                                })
+                                setTimeout(()=>{this.setState({notify:false,notifyMsg:''})}, 3000);
+                            })
+                        }} 
+                    />
+                    <View
+                        style={{
+                            width: Dimensions.get('window').width/100 * 75,
+                            paddingTop:4,
+                            paddingBottom: 4,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 12,
+                                textAlign: 'center',
+                                color: COLOR.black
+                            }}
+                        > 
+                            Make sure to update your account's billing details before placing your order.
+                            You can update info under the account tab.
+                        </Text>
+                    </View>
+                    <Button 
+                        disabled={Object.keys(this.state.cart).length > 0 ? false : true}
+                        raised
+                        primary
+                        text={'PLACE ORDER'} 
+                        style={{
+                            container:{
+                                width: Dimensions.get('window').width/100 * 75
+                            }
+                        }}
+                        onPress={this.placeOrder}
+                    />
+                    {
+                        Object.keys(this.state.cart).map((key, index)=>{
+                            return (
+                                <Card key={`item${index}`} style={{container:{padding:10,width:Dimensions.get('window').width/100 * 75,display:'flex',justifyContent:'center',alignItems:'center', flexDirection:'column'}}}>
+                                    <Text style={{textAlign:'center',fontSize:18}}>{key}</Text>
+                                    <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                        <TextInput style={{textAlign:'center',marginLeft:5, marginRight:5, flex: 1}} value={this.state.cart[key].singles.toString()} editable={false}/>
+                                        <TextInput style={{textAlign:'center',marginLeft:5, marginRight:5, flex: 1}} value={this.state.cart[key].case.toString()} editable={false}/>                                            
+                                    </View>
+                                    <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                                        <Text style={{textAlign:'center',marginLeft:5, marginRight:5, flex: 1}}>Single(s)</Text>
+                                        <Text style={{textAlign:'center',marginLeft:5, marginRight:5, flex: 1}}>Case(s)</Text>
+                                    </View>
+                                </Card>
+                            );
+                        })
+                    }
                 </ScrollView>
             </ThemeProvider>
         );
@@ -439,5 +560,6 @@ export default User = TabNavigator({
     Cart: {screen: Cart},
     Discussion: {screen: Discussion}
 },{
-    lazy: true
+    lazy: true,
+    backBehavior: 'none'
 });

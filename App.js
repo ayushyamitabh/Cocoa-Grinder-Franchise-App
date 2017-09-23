@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Button, 
-        View, 
+import {View, 
         AppRegistry, 
         Image, 
         Dimensions} from 'react-native';
 import {StackNavigator} from 'react-navigation';
+import {Button, COLOR, ThemeProvider} from 'react-native-material-ui';
 import Login from './Login';
 import Signup from './Signup';
 import User from './User';
@@ -20,15 +20,35 @@ var config = {
 };
 firebase.initializeApp(config);
 
+const uiTheme = {
+  palette: {
+      primaryColor: COLOR.blue400,
+  },
+  toolbar: {
+      container: {
+          height: 50,
+      },
+  },
+};
+
 class Home extends Component {
   constructor (props) {
     super(props);
+    this.state = {
+      msg: 'Loading...'
+    }
   }
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user)=> {
       if (user) {
+        this.setState({
+          msg: 'Go To Your Portal'
+        })
         this.props.navigation.navigate('User');
       } else {
+        this.setState({
+          msg: 'Go To Sign In / Sign Up'
+        })
         this.props.navigation.navigate('Login');
       }
     })
@@ -38,23 +58,37 @@ class Home extends Component {
   };
   render () {
     return (
-      <View 
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center',
-          paddingTop: Dimensions.get('window').height/100 * 20
-        }}
-      >
-        <Image
-            style={{
-              width: Dimensions.get('window').width/100 * 80,
-              height: Dimensions.get('window').width/100 * 80
-            }}
-            source={require('./assets/res/cgnycBlack.png')}
-        />
-      </View>
+      <ThemeProvider uiTheme={uiTheme}>
+        <View 
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+            paddingTop: Dimensions.get('window').height/100 * 20
+          }}
+        >
+          <Image
+              style={{
+                width: Dimensions.get('window').width/100 * 80,
+                height: Dimensions.get('window').width/100 * 80
+              }}
+              source={require('./assets/res/cgnycBlack.png')}
+          />
+          <Button 
+              text={this.state.msg}
+              primary
+              raised
+              onPress={()=>{
+                if (firebase.auth().currentUser) {
+                  this.props.navigation.navigate('User');
+                } else {
+                  this.props.navigation.navigate('Login');
+                }                
+              }}
+          />
+        </View>
+      </ThemeProvider>
     );
   }
 };
@@ -64,6 +98,13 @@ export default SimpleApp = StackNavigator({
   Login: { screen: Login },
   Signup: { screen: Signup },
   User: { screen: User }
+},{
+  index: 0,
+  initialRouteName: 'Home',
+  headerMode: 'none',
+  navigationOptions: {
+    gesturesEnabled: false
+  }
 });
 
 AppRegistry.registerComponent('FranchiseeApp', () => SimpleApp);

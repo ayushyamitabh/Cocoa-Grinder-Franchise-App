@@ -73,7 +73,7 @@ class Home extends Component {
                 width: Dimensions.get('window').width/100 * 80,
                 height: Dimensions.get('window').width/100 * 80
               }}
-              source={require('./assets/res/cgnycBlack.png')}
+              source={require('../assets/res/cgnycBlack.png')}
           />
           <Button 
               text={this.state.msg}
@@ -107,4 +107,4 @@ export default SimpleApp = StackNavigator({
   }
 });
 
-AppRegistry.registerComponent('FranchiseeApp', () => SimpleApp);
+AppRegistry.registerComponent('testapp', () => SimpleApp);

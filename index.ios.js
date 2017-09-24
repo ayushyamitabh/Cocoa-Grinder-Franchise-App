@@ -1,1 +1,1 @@
-import './App';
+import './ios-components/App';

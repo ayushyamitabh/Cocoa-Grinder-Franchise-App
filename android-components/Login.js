@@ -72,7 +72,7 @@ export default class Login extends React.Component {
           <ScrollView style={this.styles.view} contentContainerStyle={this.styles.container}>
             <Image 
                 style={this.styles.logo}
-                source={require('./assets/res/cgnycBlack.png')}
+                source={require('../assets/res/cgnycBlack.png')}
             />
             <Text style={this.styles.heading}> 
                 COCOA GRINDER FRANCHISEE

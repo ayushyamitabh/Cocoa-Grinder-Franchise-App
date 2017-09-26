@@ -49,9 +49,7 @@ const uiTheme = {
 
 class Account extends Component {
     static navigationOptions = {
-        header: null,
-        tabBarLabel: 'Account',
-        left: null
+        tabBarLabel: 'Account'
     };
     constructor (props) {
         super (props);
@@ -113,7 +111,6 @@ class Account extends Component {
                     contentContainerStyle={{
                         display: 'flex', 
                         alignItems:'center',
-                        paddingTop:25,
                         paddingBottom:25
                     }}
                 >
@@ -395,7 +392,6 @@ class Account extends Component {
 
 class Cart extends Component {
     static navigationOptions = {
-        header: null,
         tabBarLabel: 'Cart'
     };
     constructor (props){
@@ -560,6 +556,5 @@ export default User = TabNavigator({
     Cart: {screen: Cart},
     Discussion: {screen: Discussion}
 },{
-    lazy: true,
-    backBehavior: 'none'
+    lazy: true
 });

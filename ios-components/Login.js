@@ -62,8 +62,7 @@ export default class Login extends React.Component {
     }
     static navigationOptions = {
       title: 'Sign In',
-      headerLeft: null,
-      left: null
+      headerLeft: null
     };
     static paths = null;
     render() {
@@ -75,7 +74,7 @@ export default class Login extends React.Component {
                 source={require('../assets/res/cgnycBlack.png')}
             />
             <Text style={this.styles.heading}> 
-                COCOA GRINDER FRANCHISEE
+                COCOA GRINDER FAMILY
             </Text>
             <TextInput 
                 style={this.styles.input}

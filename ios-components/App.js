@@ -94,14 +94,13 @@ class Home extends Component {
 };
 
 export default SimpleApp = StackNavigator({
-  Home: { screen: Home },
+  Home: { screen: Home, navigationOptions:({navigation})=>({title:'Cocoa Grinder Franchise',headerLeft:null})  },
   Login: { screen: Login },
   Signup: { screen: Signup },
-  User: { screen: User }
+  User: { screen: User, navigationOptions:({navigation})=>({title:'Cocoa Grinder Franchise',headerLeft:null}) }
 },{
   index: 0,
   initialRouteName: 'Home',
-  headerMode: 'none',
   navigationOptions: {
     gesturesEnabled: false
   }

@@ -397,9 +397,9 @@ class CreatePost extends Component {
 }
 
 export default Discussion = StackNavigator({
-    Home: { screen: DiscussionHome },
-    Post: { screen: PostItem },
-    Create: { screen: CreatePost }
+    Home: { screen: DiscussionHome, navigationOptions:{title:'Discussion'}},
+    Post: { screen: PostItem, navigationOptions:{title:'Post'}},
+    Create: { screen: CreatePost, navigationOptions:{title:'New Post'}}
 },{
     index: 0,
     initialRouteName: 'Home',

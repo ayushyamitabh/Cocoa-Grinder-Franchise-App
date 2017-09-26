@@ -35,7 +35,6 @@ const uiTheme = {
 
 class ShopHome extends Component {
     static navigationOptions = {
-        header: null,
         tabBarLabel: 'Shop'
     };
     constructor (props) {
@@ -58,53 +57,52 @@ class ShopHome extends Component {
     render() {
         return (
             <ThemeProvider uiTheme={uiTheme}> 
-                <ScrollView contentContainerStyle={{paddingTop:8, alignItems:'center'}}>
-                    {
-                        this.state.types.map((data,index)=>{
-                            return(
-                                <Card 
-                                    style={{
-                                        container: {
-                                            width: Dimensions.get('window').width/100 * 80
-                                        }
-                                    }}
-                                    key={`type${index}`}
-                                    onPress={()=>{
-                                        this.props.navigation.navigate('Items', {type: data});
-                                    }}
-                                >
-                                    <Text
+                <View style={{marginTop:40,paddingTop:40}}>
+                    <ScrollView contentContainerStyle={{display:'flex',paddingTop:40,alignItems:'center'}} >
+                        {
+                            this.state.types.map((data,index)=>{
+                                return(
+                                    <Card 
                                         style={{
-                                            textAlign:'center',
-                                            fontSize:18,
-                                            paddingTop:10,
-                                            paddingBottom:10
+                                            container: {
+                                                width: Dimensions.get('window').width/100 * 80
+                                            }
+                                        }}
+                                        key={`type${index}`}
+                                        onPress={()=>{
+                                            this.props.navigation.navigate('Items', {type: data});
                                         }}
                                     >
-                                        {
-                                            data === 'SaucesDressings'?
-                                            'Sauces & Dressings' :
-                                            data === 'VeggiesFruits'?
-                                            'Veggies & Fruits' :
-                                            data === 'SyrupsSugars'?
-                                            'Syrups & Sugars':
-                                            data
-                                        }
-                                    </Text>
-                                </Card>
-                            );
-                        })
-                    }
-                </ScrollView>
+                                        <Text
+                                            style={{
+                                                textAlign:'center',
+                                                fontSize:18,
+                                                paddingTop:10,
+                                                paddingBottom:10
+                                            }}
+                                        >
+                                            {
+                                                data === 'SaucesDressings'?
+                                                'Sauces & Dressings' :
+                                                data === 'VeggiesFruits'?
+                                                'Veggies & Fruits' :
+                                                data === 'SyrupsSugars'?
+                                                'Syrups & Sugars':
+                                                data
+                                            }
+                                        </Text>
+                                    </Card>
+                                );
+                            })
+                        }
+                    </ScrollView>
+                </View>
             </ThemeProvider>
         );
     }
 }
 
 class TypeItems extends Component {
-    static navigationOptions = {
-        header: null
-    };
     constructor(props) {
         super(props);
         this.state = {
@@ -268,6 +266,12 @@ class TypeItems extends Component {
 }
 
 export default Shop = StackNavigator({
-    Home: { screen: ShopHome },
-    Items: { screen: TypeItems }
+    ShopHome: { screen: ShopHome, navigationOptions:({navigation})=>({title:'Shop',headerLeft:null})  },
+    Items: { screen: TypeItems, navigationOptions:({navigation})=>({title:'Shop',headerLeft:null})  }
+},{
+    index: 0,
+    initialRouteName: 'ShopHome',
+    navigationOptions: {
+        gesturesEnabled: false
+    }
 });

@@ -35,7 +35,8 @@ const uiTheme = {
 
 class ShopHome extends Component {
     static navigationOptions = {
-        header: null,
+        title: 'Shop',
+        headerLeft: null,
         tabBarLabel: 'Shop'
     };
     constructor (props) {
@@ -103,7 +104,7 @@ class ShopHome extends Component {
 
 class TypeItems extends Component {
     static navigationOptions = {
-        header: null
+        title: 'Items'
     };
     constructor(props) {
         super(props);
@@ -270,4 +271,10 @@ class TypeItems extends Component {
 export default Shop = StackNavigator({
     Home: { screen: ShopHome },
     Items: { screen: TypeItems }
+},{
+    index: 0,
+    initialRouteName: 'Home',
+    navigationOptions: {
+        gesturesEnabled: false
+    }
 });

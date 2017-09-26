@@ -32,7 +32,20 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
     input: {
-        width: Dimensions.get('window').width/100 * 85 - 30
+        width: Dimensions.get('window').width/100 * 85 - 30,
+        fontSize: 14,
+        paddingTop: 4,
+        paddingBottom: 4,
+        paddingLeft: 4,
+        borderWidth: 2,
+        borderColor: COLOR.grey100,
+        marginTop: 2,
+        marginBottom: 1,
+        borderRadius: 8
+    },
+    icon: {
+        width: 24,
+        height: 24,
     }
 });
 
@@ -111,6 +124,7 @@ class Account extends Component {
                     contentContainerStyle={{
                         display: 'flex', 
                         alignItems:'center',
+                        paddingTop: 25,
                         paddingBottom:25
                     }}
                 >
@@ -551,10 +565,50 @@ class Cart extends Component {
 }
 
 export default User = TabNavigator({
-    Account: {screen: Account},
-    Shop: {screen: Shop},
-    Cart: {screen: Cart},
-    Discussion: {screen: Discussion}
+    Account: {
+        screen: Account,
+        navigationOptions:{
+            tabBarIcon: ({tintColor})=>(
+                <Image 
+                    source={require('../assets/res/account.png')} 
+                    style={[styles.icon, {tintColor:tintColor}]}
+                />
+            )
+        }
+    },
+    Shop: {
+        screen: Shop,
+        navigationOptions:{
+            tabBarIcon: ({tintColor})=>(
+                <Image 
+                    source={require('../assets/res/shop.png')} 
+                    style={[styles.icon, {tintColor:tintColor}]}
+                />
+            )
+        }
+    },
+    Cart: {
+        screen: Cart,
+        navigationOptions:{
+            tabBarIcon: ({tintColor})=>(
+                <Image 
+                    source={require('../assets/res/cart.png')} 
+                    style={[styles.icon, {tintColor:tintColor}]}
+                />
+            )
+        }
+    },
+    Discussion: {
+        screen: Discussion,
+        navigationOptions:{
+            tabBarIcon: ({tintColor})=>(
+                <Image 
+                    source={require('../assets/res/discussion.png')} 
+                    style={[styles.icon, {tintColor:tintColor}]}
+                />
+            )
+        }
+    }
 },{
     lazy: true
 });

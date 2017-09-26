@@ -52,8 +52,16 @@ export default class Login extends React.Component {
           width: Dimensions.get('window').width/100 * 62.5,
           height: Dimensions.get('window').width/100 * 62.5
         },
-        input:{ 
-            width: Dimensions.get('window').width/100 * 70
+        input: {
+            width: Dimensions.get('window').width/100 * 85 - 30,
+            fontSize: 14,
+            paddingTop: 4,
+            paddingBottom: 4,
+            paddingLeft: 6,
+            borderWidth: 1,
+            borderColor: COLOR.grey500,
+            marginTop: 4,
+            borderRadius: 8
         },
         signin: {
             width: Dimensions.get('window').width/100 * 70            
@@ -106,7 +114,8 @@ export default class Login extends React.Component {
                 text="SIGN IN" 
                 style={{
                     container:{
-                        width:Dimensions.get('window').width/100* 69
+                        width:Dimensions.get('window').width/100* 69,
+                        marginTop: 8
                     }
                 }}
                 onPress={()=>{

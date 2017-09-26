@@ -36,8 +36,8 @@ const uiTheme = {
 
 class DiscussionHome extends Component {
     static navigationOptions = {
-        header: null
-    };
+        title: 'Discussion'
+    }
     constructor (props) {
         super(props);
         this.state = {
@@ -117,7 +117,8 @@ class DiscussionHome extends Component {
 
 class PostItem extends Component {
     static navigationOptions = {
-        title: 'Post'
+        title: 'Post',
+        tabBarLabel: 'Discussion'
     };
     constructor(props) {
         super(props);
@@ -299,7 +300,8 @@ class CreatePost extends Component {
         this.createPost = this.createPost.bind(this);
     }
     static navigationOptions = {
-        title: 'CREATE NEW POST'
+        title: 'Create New Post',
+        tabBarLabel: 'Discussion'
     }
     createPost() {
         firebase.database().ref('Discussion').once('value', (snap)=>{
@@ -318,7 +320,7 @@ class CreatePost extends Component {
         return (
             <ThemeProvider uiTheme={uiTheme}>
                 <ScrollView
-                    contentContainerStyle={{paddingTop:15}}
+                    contentContainerStyle={{paddingTop:35}}
                 >
                     <Card
                         style={{
@@ -397,9 +399,9 @@ class CreatePost extends Component {
 }
 
 export default Discussion = StackNavigator({
-    Home: { screen: DiscussionHome, navigationOptions:{title:'Discussion'}},
-    Post: { screen: PostItem, navigationOptions:{title:'Post'}},
-    Create: { screen: CreatePost, navigationOptions:{title:'New Post'}}
+    Home: { screen: DiscussionHome},
+    Post: { screen: PostItem},
+    Create: { screen: CreatePost}
 },{
     index: 0,
     initialRouteName: 'Home',

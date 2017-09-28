@@ -35,7 +35,8 @@ const uiTheme = {
 
 class ShopHome extends Component {
     static navigationOptions = {
-        tabBarLabel: 'Shop'
+        tabBarLabel: 'Shop',
+        header: null
     };
     constructor (props) {
         super(props);
@@ -57,8 +58,7 @@ class ShopHome extends Component {
     render() {
         return (
             <ThemeProvider uiTheme={uiTheme}> 
-                <View style={{marginTop:40,paddingTop:40}}>
-                    <ScrollView contentContainerStyle={{display:'flex',paddingTop:40,alignItems:'center'}} >
+                    <ScrollView contentContainerStyle={{display:'flex',paddingTop:25,paddingBottom:25, alignItems:'center'}} >
                         {
                             this.state.types.map((data,index)=>{
                                 return(
@@ -96,7 +96,6 @@ class ShopHome extends Component {
                             })
                         }
                     </ScrollView>
-                </View>
             </ThemeProvider>
         );
     }
@@ -229,7 +228,7 @@ class TypeItems extends Component {
                         accent
                         raised
                         text='Back To Store'
-                        onPress={()=>{this.props.navigation.navigate('Home')}}
+                        onPress={()=>{this.props.navigation.goBack()}}
                     />
                     <ScrollView
                         style={{
@@ -266,8 +265,8 @@ class TypeItems extends Component {
 }
 
 export default Shop = StackNavigator({
-    ShopHome: { screen: ShopHome, navigationOptions:({navigation})=>({title:'Shop',headerLeft:null})  },
-    Items: { screen: TypeItems, navigationOptions:({navigation})=>({title:'Shop',headerLeft:null})  }
+    ShopHome: { screen: ShopHome, navigationOptions:({navigation})=>({title:'Shop',header:null})  },
+    Items: { screen: TypeItems, navigationOptions:({navigation})=>({title:'Shop',header:null})  }
 },{
     index: 0,
     initialRouteName: 'ShopHome',

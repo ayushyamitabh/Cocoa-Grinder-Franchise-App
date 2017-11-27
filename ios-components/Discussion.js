@@ -36,7 +36,8 @@ const uiTheme = {
 
 class DiscussionHome extends Component {
     static navigationOptions = {
-        title: 'Discussion'
+        title: 'Discussion',
+        tabBarLabel:'Chat'
     }
     constructor (props) {
         super(props);
@@ -118,7 +119,7 @@ class DiscussionHome extends Component {
 class PostItem extends Component {
     static navigationOptions = {
         title: 'Post',
-        tabBarLabel: 'Discussion'
+        tabBarLabel: 'Chat'
     };
     constructor(props) {
         super(props);
@@ -301,7 +302,7 @@ class CreatePost extends Component {
     }
     static navigationOptions = {
         title: 'Create New Post',
-        tabBarLabel: 'Discussion'
+        tabBarLabel: 'Chat'
     }
     createPost() {
         firebase.database().ref('Discussion').once('value', (snap)=>{

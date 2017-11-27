@@ -610,5 +610,10 @@ export default User = TabNavigator({
         }
     }
 },{
-    lazy: true
+    lazy: true,
+    tabBarOptions : {
+        labelStyle: {
+            adjustsFontSizeToFit: true
+        }
+    }
 });

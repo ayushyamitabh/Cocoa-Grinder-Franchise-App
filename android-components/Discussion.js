@@ -36,7 +36,8 @@ const uiTheme = {
 
 class DiscussionHome extends Component {
     static navigationOptions = {
-        header: null
+        header: null,
+        tabBarLabel: 'CHAT'
     };
     constructor (props) {
         super(props);
@@ -54,7 +55,7 @@ class DiscussionHome extends Component {
     render() {
         return (
             <ThemeProvider uiTheme={uiTheme}>
-                <ScrollView contentContainerStyle={{paddingTop: 10}}>
+                <ScrollView contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
                     <Card 
                         style={{
                             container: {
@@ -117,7 +118,8 @@ class DiscussionHome extends Component {
 
 class PostItem extends Component {
     static navigationOptions = {
-        title: 'Post'
+        title: 'Post',
+        tabBarLabel: 'Chat'
     };
     constructor(props) {
         super(props);
@@ -166,8 +168,7 @@ class PostItem extends Component {
                 <ScrollView
                     contentContainerStyle={{
                         display:'flex',
-                        paddingBottom: 10,
-                        height: Dimensions.get('window').height/100 * 80
+                        paddingBottom: 0,
                     }}
                 >
                     <Card
@@ -281,6 +282,11 @@ class PostItem extends Component {
                             }) :
                             <Text>No comments on this post yet...</Text>
                         }
+                        {
+                            this.state.data.comments ?
+                            <Text style={{textAlign:'center', fontSize: 10, color: COLOR.grey400, padding:20}}>END OF COMMENTS</Text> :
+                            null                       
+                        }
                     </ScrollView>
                 </ScrollView>
             </ThemeProvider>
@@ -299,7 +305,8 @@ class CreatePost extends Component {
         this.createPost = this.createPost.bind(this);
     }
     static navigationOptions = {
-        title: 'CREATE NEW POST'
+        title: 'CREATE NEW POST',
+        tabBarLabel: 'Chat'
     }
     createPost() {
         firebase.database().ref('Discussion').once('value', (snap)=>{

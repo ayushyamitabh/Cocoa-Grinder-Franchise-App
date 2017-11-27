@@ -24,6 +24,7 @@ import { Button,
 import * as firebase from 'firebase';
 import Shop from './Shop';
 import Discussion from './Discussion';
+// import { auto } from '../../../.cache/typescript/2.6/node_modules/@types/async';
 
 const styles = StyleSheet.create({
     sectionTitle: {
@@ -600,5 +601,10 @@ export default User = TabNavigator({
         }
     }
 },{
-    lazy: true
+    lazy: true,
+    tabBarOptions: {
+        labelStyle: {
+            fontSize: 12
+        }
+    }
 });

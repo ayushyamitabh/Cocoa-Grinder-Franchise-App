@@ -107,4 +107,4 @@ export default SimpleApp = StackNavigator({
   }
 });
 
-AppRegistry.registerComponent('FranchiseeApp', () => SimpleApp);
+AppRegistry.registerComponent('cocoagrinderfranchise', () => SimpleApp);
